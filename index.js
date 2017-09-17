@@ -7,8 +7,7 @@ const standardChangelog = require('standard-changelog')
     , fs = require('fs')
     , q = require('q')
     , exec = require('child_process').exec
-
-
+    , concatStream = require('concat-stream')
 
 const PACKAGE_PATH = `${ process.env.PWD }/package.json`
     , CHANGELOG_PATH = `${ process.env.PWD }/CHANGELOG.md`
@@ -55,26 +54,25 @@ function prompt(versions) {
             message: "What kind of release is it?"
         }
     ])
-    .then(function(answers) {
-        return answers.version
-    })
+    .then(function(answers) { return answers.version })
 }
 
 function bump_version(version) {
     return q.nfcall(fs.writeFile, PACKAGE_PATH, version.str)
-    .then(function() {
-        return version
-    })
+    .then(function() { return version })
 }
 
 function changelog(version) {
     if (version.preid === RC_PREID) return version
     let defer = q.defer()
-    standardChangelog.createIfMissing(CHANGELOG_PATH)
+    let file = fs.readFileSync(CHANGELOG_PATH)
+    standardChangelog.createIfMissing()
     standardChangelog()
-        .on('finish', function() { defer.resolve(version) })
-        .on('error', function(err) { defer.reject(err) })
-        .pipe(fs.createWriteStream(CHANGELOG_PATH))
+        .pipe(concatStream({ encoding: 'buffer'}, function(data) {
+            fs.writeFileSync(CHANGELOG_PATH, Buffer.concat([data, file]))
+            defer.resolve(version)
+        }))
+
     return defer.promise
 }
 
@@ -83,16 +81,16 @@ function git_commit(version) {
     exec([
         'git add package.json CHANGELOG.md',
         `git commit -a -m "chore(release): v${ version.new }"`
-    ].join(' && '), (err) => {
+    ].join(' && '), function(err) {
         if (err) return defer.reject(err)
-        defer.resolve()
+        defer.resolve(version)
     })
     return defer.promise
 }
 
 function git_push(version) {
     let defer = q.defer()
-    exec('git push', (err) => {
+    exec('git push', function(err) {
         if (err) return defer.reject(err)
         defer.resolve(version)
     })
@@ -105,7 +103,7 @@ function git_tag(version) {
     exec([
         `git tag ${ version.new }`,
         'git push --tags'
-    ].join(' && '), (err) => {
+    ].join(' && '), function(err) {
         if (err) return defer.reject(err)
         defer.resolve(version)
     })
@@ -129,10 +127,10 @@ get_all_versions()
 .then(prompt)
 .then(bump_version)
 .then(changelog)
-.then(git_commit)
-.then(git_push)
-.then(git_tag)
-.then(github_release)
+// .then(git_commit)
+// .then(git_push)
+// .then(git_tag)
+// .then(github_release)
 .catch(function(err) {
     console.log(err)
 })
