@@ -1,3 +1,13 @@
+<a name="1.0.7"></a>
+## [1.0.7](https://github.com/roparz/angular-release/compare/1.0.6...1.0.7) (2017-09-20)
+
+
+### Bug Fixes
+
+* fix notify version replace ([17f50b7](https://github.com/roparz/angular-release/commit/17f50b7))
+
+
+
 <a name="1.0.6"></a>
 ## [1.0.6](https://github.com/roparz/angular-release/compare/1.0.5...1.0.6) (2017-09-20)
 
