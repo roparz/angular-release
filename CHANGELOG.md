@@ -1,3 +1,13 @@
+<a name="1.0.5"></a>
+## [1.0.5](https://github.com/roparz/angular-release/compare/1.0.4...1.0.5) (2017-09-20)
+
+
+### Bug Fixes
+
+* fix and enable github_release task ([0705218](https://github.com/roparz/angular-release/commit/0705218))
+
+
+
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/roparz/angular-release/compare/1.0.3...1.0.4) (2017-09-20)
 
