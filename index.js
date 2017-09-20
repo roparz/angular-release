@@ -13,13 +13,24 @@ const PACKAGE_PATH = `${ process.env.PWD }/package.json`
     , CHANGELOG_PATH = `${ process.env.PWD }/CHANGELOG.md`
     , RC_PREID = 'rc'
 
+const VERSION = require(PACKAGE_PATH).version
+
 function get_all_versions() {
     const opts = {
         str: fs.readFileSync(PACKAGE_PATH).toString()
     }
+    const sub_opts = {
+        str: (function() {
+            if (VERSION.match(/-\d+$/)) return opts.str
+            return opts.str.replace(
+                /(['"]version['"]:\s*['"]).*(['"]),?/,
+                `$1${ VERSION + '-0' }$2`
+            )
+        })()
+    }
     return q.all([
         q.nfcall(bump, Object.assign({ type: 'prerelease', preid: RC_PREID }, opts)),
-        q.nfcall(bump, Object.assign({ type: 'prerelease' }, opts)),
+        q.nfcall(bump, Object.assign({ type: 'prerelease' }, sub_opts)),
         q.nfcall(bump, Object.assign({ type: 'patch' }, opts)),
         q.nfcall(bump, Object.assign({ type: 'minor' }, opts)),
         q.nfcall(bump, Object.assign({ type: 'major'}, opts))
@@ -35,11 +46,11 @@ function prompt(versions) {
             name: "version",
             type: "list",
             choices: [{
-                name: `release-candidate (${ versions.rc.new })`,
-                value: versions.rc
-            }, {
                 name: `sub-release (${ versions.sub.new })`,
                 value: versions.sub
+            }, {
+                name: `release-candidate (${ versions.rc.new })`,
+                value: versions.rc
             }, {
                 name: `patch (${ versions.patch.new })`,
                 value: versions.patch
