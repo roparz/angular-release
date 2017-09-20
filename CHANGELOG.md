@@ -1,3 +1,13 @@
+<a name="1.0.6"></a>
+## [1.0.6](https://github.com/roparz/angular-release/compare/1.0.5...1.0.6) (2017-09-20)
+
+
+### Features
+
+* add notifications ([349da58](https://github.com/roparz/angular-release/commit/349da58))
+
+
+
 <a name="1.0.5"></a>
 ## [1.0.5](https://github.com/roparz/angular-release/compare/1.0.4...1.0.5) (2017-09-20)
 
