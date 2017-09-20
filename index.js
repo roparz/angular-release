@@ -136,7 +136,7 @@ function github_release(version) {
 
 function notify(msg) {
     return (version) => {
-        console.log(msg.replace('$$version', version.value))
+        console.log(msg.replace('$$version', version.new))
         return version
     }
 }
