@@ -20,11 +20,11 @@ function get_all_versions() {
         str: fs.readFileSync(PACKAGE_PATH).toString()
     }
     const sub_opts = {
-        str: (function() {
+        str: (() => {
             if (VERSION.match(/-\d+$/)) return opts.str
             return opts.str.replace(
-                /(['"]version['"]:\s*['"]).*(['"]),?/,
-                `$1${ VERSION + '-0' }$2`
+                /"version":\s*".*",?/,
+                `"version": "${ VERSION }-0"`
             )
         })()
     }
@@ -35,7 +35,7 @@ function get_all_versions() {
         q.nfcall(bump, Object.assign({ type: 'minor' }, opts)),
         q.nfcall(bump, Object.assign({ type: 'major'}, opts))
     ])
-    .spread(function(rc, sub, patch, minor, major) {
+    .spread((rc, sub, patch, minor, major) => {
         return { rc, sub, patch, minor, major }
     })
 }
@@ -65,12 +65,12 @@ function prompt(versions) {
             message: "What kind of release is it?"
         }
     ])
-    .then(function(answers) { return answers.version })
+    .then((answers) => answers.version)
 }
 
 function bump_version(version) {
     return q.nfcall(fs.writeFile, PACKAGE_PATH, version.str)
-    .then(function() { return version })
+    .then(() => version)
 }
 
 function changelog(version) {
@@ -79,7 +79,7 @@ function changelog(version) {
     let file = fs.readFileSync(CHANGELOG_PATH)
     standardChangelog.createIfMissing()
     standardChangelog()
-        .pipe(concatStream({ encoding: 'buffer'}, function(data) {
+        .pipe(concatStream({ encoding: 'buffer'}, (data) => {
             fs.writeFileSync(CHANGELOG_PATH, Buffer.concat([data, file]))
             defer.resolve(version)
         }))
@@ -92,7 +92,7 @@ function git_commit(version) {
     exec([
         'git add package.json CHANGELOG.md',
         `git commit -a -m "chore(release): v${ version.new }"`
-    ].join(' && '), function(err) {
+    ].join(' && '), (err) => {
         if (err) return defer.reject(err)
         defer.resolve(version)
     })
@@ -101,7 +101,7 @@ function git_commit(version) {
 
 function git_push(version) {
     let defer = q.defer()
-    exec('git push', function(err) {
+    exec('git push', (err) => {
         if (err) return defer.reject(err)
         defer.resolve(version)
     })
@@ -114,7 +114,7 @@ function git_tag(version) {
     exec([
         `git tag ${ version.new }`,
         'git push --tags'
-    ].join(' && '), function(err) {
+    ].join(' && '), (err) => {
         if (err) return defer.reject(err)
         defer.resolve(version)
     })
@@ -142,6 +142,6 @@ get_all_versions()
 .then(git_push)
 .then(git_tag)
 // .then(github_release)
-.catch(function(err) {
+.catch((err) => {
     console.log(err)
 })
