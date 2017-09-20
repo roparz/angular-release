@@ -15,8 +15,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "ln -sf ../../node_modules/angular-precommit/index.js .git/hooks/commit-msg"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
