@@ -1,3 +1,13 @@
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/roparz/angular-release/compare/1.0.3...1.0.4) (2017-09-20)
+
+
+### Bug Fixes
+
+* **package.json:** Remove post install script ([a82ae5a](https://github.com/roparz/angular-release/commit/a82ae5a))
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/roparz/angular-release/compare/1.0.2...1.0.3) (2017-09-20)
 
