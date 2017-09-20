@@ -123,13 +123,13 @@ function git_tag(version) {
 
 function github_release(version) {
     if (version.preid === RC_PREID) return version
-    if (!process.env.GITHUB_AUTH_TOKEN) {
-        console.log('Cannot run conventionalGithubReleaser. You must add a .env file with a GITHUB_AUTH_TOKEN key')
+    if (!process.env.GITHUB_OAUTH_TOKEN) {
+        console.log('Cannot run conventionalGithubReleaser. You must add a .env file with a GITHUB_OAUTH_TOKEN key')
         return version
     }
     const GITHUB_AUTH = {
         type: 'oauth',
-        token: process.env.GITHUB_AUTH_TOKEN
+        token: process.env.GITHUB_OAUTH_TOKEN
     }
     return q.nfcall(conventionalGithubReleaser, GITHUB_AUTH, { preset: 'angular' })
 }
@@ -141,7 +141,7 @@ get_all_versions()
 .then(git_commit)
 .then(git_push)
 .then(git_tag)
-// .then(github_release)
+.then(github_release)
 .catch((err) => {
     console.log(err)
 })
