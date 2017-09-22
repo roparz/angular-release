@@ -1,3 +1,13 @@
+<a name="1.0.9"></a>
+## [1.0.9](https://github.com/roparz/angular-release/compare/1.0.8...1.0.9) (2017-09-22)
+
+
+### Bug Fixes
+
+* Fix createIfMissing call ([acf964e](https://github.com/roparz/angular-release/commit/acf964e))
+
+
+
 <a name="1.0.8"></a>
 ## [1.0.8](https://github.com/roparz/angular-release/compare/1.0.7...1.0.8) (2017-09-22)
 
