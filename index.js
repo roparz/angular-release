@@ -134,8 +134,9 @@ function github_release(version) {
     return q.nfcall(conventionalGithubReleaser, GITHUB_AUTH, { preset: 'angular' })
 }
 
-function notify(msg) {
+function notify(msg, optional) {
     return (version) => {
+        if (optional && version.preid === RC_PREID) return version
         console.log(msg.replace('$$version', version.new))
         return version
     }
@@ -145,14 +146,14 @@ get_all_versions()
 .then(prompt)
 .then(notify('- Update package.json with version: $$version'))
 .then(bump_version)
-.then(notify('- Create changelog'))
+.then(notify('- Update changelog'))
 .then(changelog)
 .then(notify('- git commit'))
 .then(git_commit)
 .then(notify('- git push'))
 .then(git_push)
-.then(notify('- git tag'))
+.then(notify('- git tag', true))
 .then(git_tag)
-.then(notify('- Github release'))
+.then(notify('- Github release', true))
 .then(github_release)
 .catch((err) => console.log(err))
