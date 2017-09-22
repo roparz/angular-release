@@ -76,8 +76,8 @@ function bump_version(version) {
 function changelog(version) {
     if (version.preid === RC_PREID) return version
     let defer = q.defer()
-    let file = fs.readFileSync(CHANGELOG_PATH)
     standardChangelog.createIfMissing()
+    let file = fs.readFileSync(CHANGELOG_PATH)
     standardChangelog()
         .pipe(concatStream({ encoding: 'buffer'}, (data) => {
             fs.writeFileSync(CHANGELOG_PATH, Buffer.concat([data, file]))
