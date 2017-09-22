@@ -1,3 +1,14 @@
+<a name="1.0.8"></a>
+## [1.0.8](https://github.com/roparz/angular-release/compare/1.0.7...1.0.8) (2017-09-22)
+
+
+### Bug Fixes
+
+* Fix CHANGELOG creation when missing ([a97e18e](https://github.com/roparz/angular-release/commit/a97e18e))
+* Fix logs display when release-candidate ([1ae4870](https://github.com/roparz/angular-release/commit/1ae4870))
+
+
+
 <a name="1.0.7"></a>
 ## [1.0.7](https://github.com/roparz/angular-release/compare/1.0.6...1.0.7) (2017-09-20)
 
