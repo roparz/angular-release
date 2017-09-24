@@ -1,3 +1,5 @@
+[<img alt="npm version" src="https://img.shields.io/npm/v/angular-release.svg"/>](https://www.npmjs.com/package/angular-release)
+
 # Angular Release
 
 A script to build releases based on [Angular conventional changelog preset](https://github.com/conventional-changelog/conventional-changelog/blob/master/packages/conventional-changelog-angular/convention.md) (inspired by Gulp "Automate release workflow" recipe).
