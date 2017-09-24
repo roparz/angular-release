@@ -3,6 +3,10 @@
   "version": "1.0.9",
   "description": "A tool to builds releases based on Angular conventional changelog preset (inspired by Gulp \"Automate release workflow\" recipe).",
   "main": "index.js",
+  "bin": {
+    "angular-release": "./index.js",
+    "angular-release-es5": "./index-es5.js"
+  },
   "dependencies": {
     "angular-precommit": "1.0.3",
     "bump-regex": "2.7.0",
@@ -13,9 +17,13 @@
     "q": "1.5.0",
     "standard-changelog": "1.0.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.6.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/.bin/babel index.js -o index-es5.js"
   },
   "repository": {
     "type": "git",
