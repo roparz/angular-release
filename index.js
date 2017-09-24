@@ -62,12 +62,18 @@ function prompt(versions) {
             }, {
                 name: `major (${ versions.major.new })`,
                 value: versions.major
+            }, {
+                name: `cancel`,
+                value: null
             }],
             default: versions.patch,
             message: "What kind of release is it?"
         }
     ])
-    .then((answers) => answers.version)
+    .then(({ version }) => {
+        if (!version) process.exit(0)
+        return version
+    })
 }
 
 function bump_version(version) {

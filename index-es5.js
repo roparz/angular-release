@@ -52,11 +52,17 @@ function prompt(versions) {
         }, {
             name: 'major (' + versions.major.new + ')',
             value: versions.major
+        }, {
+            name: 'cancel',
+            value: null
         }],
         default: versions.patch,
         message: "What kind of release is it?"
-    }]).then(function (answers) {
-        return answers.version;
+    }]).then(function (_ref) {
+        var version = _ref.version;
+
+        if (!version) process.exit(0);
+        return version;
     });
 }
 
