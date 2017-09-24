@@ -1,3 +1,13 @@
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/roparz/angular-release/compare/1.1.2...1.1.3) (2017-09-24)
+
+
+### Features
+
+* add cancel option ([d32b1ba](https://github.com/roparz/angular-release/commit/d32b1ba))
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/roparz/angular-release/compare/1.1.1...1.1.2) (2017-09-24)
 
