@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/roparz/angular-release/compare/1.0.9...1.1.0) (2017-09-24)
+
+
+### Features
+
+* add es5 compatibility mode ([d1e31c7](https://github.com/roparz/angular-release/commit/d1e31c7))
+
+
+
 <a name="1.0.9"></a>
 ## [1.0.9](https://github.com/roparz/angular-release/compare/1.0.8...1.0.9) (2017-09-22)
 
