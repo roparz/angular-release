@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 require('dotenv').config({ path: `${ process.env.PWD }/.env` })
 
 const standardChangelog = require('standard-changelog')
