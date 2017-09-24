@@ -128,6 +128,6 @@ function notify(msg, optional) {
     };
 }
 
-get_all_versions().then(prompt).then(notify('- Update package.json with version: $$version')).then(bump_version).then(notify('- Update changelog')).then(changelog).then(notify('- git commit')).then(git_commit).then(notify('- git push')).then(git_push).then(notify('- git tag', true)).then(git_tag).then(notify('- Github release', true)).then(github_release).catch(function (err) {
+get_all_versions().then(prompt).then(notify('- Update package.json with version: $$version')).then(bump_version).then(notify('- Update changelog', true)).then(changelog).then(notify('- git commit')).then(git_commit).then(notify('- git push')).then(git_push).then(notify('- git tag', true)).then(git_tag).then(notify('- Github release', true)).then(github_release).catch(function (err) {
     return console.log(err);
 });
