@@ -1,3 +1,13 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/roparz/angular-release/compare/1.1.0...1.1.1) (2017-09-24)
+
+
+### Bug Fixes
+
+* make scripts runnable from bin ([b668792](https://github.com/roparz/angular-release/commit/b668792))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/roparz/angular-release/compare/1.0.9...1.1.0) (2017-09-24)
 
