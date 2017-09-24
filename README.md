@@ -20,20 +20,20 @@ node_modules/.bin/angular-release
 node_modules/.bin/angular-release-es5
 ```
 
-## How it works?
+## How it works
 
-- ask the kind of release you want to do (see screenshot below)
+- you choose the kind of release you want to do (see screenshot below)
   - `sub-release`
   - `release-candidate`
   - `patch`
   - `minor`
   - `major`
-- update your `package.json` file
-- create and update `CHANGELOG.md` (unless you choosed `release-candidate`)
+- the script will update your `package.json` file
+- create or update `CHANGELOG.md` (unless you choosed `release-candidate`)
 - commit `chore(release): vX.Y.Z`
 - push
 - tag (unless you choosed `release-candidate`)
-- create Github Release (unless you choosed `release-candidate` and only if `GITHUB_OAUTH_TOKEN` environment variable is passed to node)
+- and finally create a Github Release (unless you choosed `release-candidate` and only if `GITHUB_OAUTH_TOKEN` environment variable is passed to node)
 
 ## Github Release
 
