@@ -1,3 +1,13 @@
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/roparz/angular-release/compare/1.1.1...1.1.2) (2017-09-24)
+
+
+### Bug Fixes
+
+* fix changelog log display ([6a4fb2c](https://github.com/roparz/angular-release/commit/6a4fb2c))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/roparz/angular-release/compare/1.1.0...1.1.1) (2017-09-24)
 
