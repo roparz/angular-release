@@ -1,3 +1,13 @@
+<a name="1.1.4"></a>
+## [1.1.4](https://github.com/roparz/angular-release/compare/1.1.3...1.1.4) (2017-09-27)
+
+
+### Bug Fixes
+
+* remove sub-release option ([b870f37](https://github.com/roparz/angular-release/commit/b870f37))
+
+
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/roparz/angular-release/compare/1.1.2...1.1.3) (2017-09-24)
 
