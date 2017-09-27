@@ -22,14 +22,8 @@ function get_all_versions() {
     var opts = {
         str: fs.readFileSync(PACKAGE_PATH).toString()
     };
-    var sub_opts = {
-        str: function () {
-            if (VERSION.match(/-\d+$/)) return opts.str;
-            return opts.str.replace(/"version":\s*".*",?/, '"version": "' + VERSION + '-0"');
-        }()
-    };
-    return q.all([q.nfcall(bump, Object.assign({ type: 'prerelease', preid: RC_PREID }, opts)), q.nfcall(bump, Object.assign({ type: 'prerelease' }, sub_opts)), q.nfcall(bump, Object.assign({ type: 'patch' }, opts)), q.nfcall(bump, Object.assign({ type: 'minor' }, opts)), q.nfcall(bump, Object.assign({ type: 'major' }, opts))]).spread(function (rc, sub, patch, minor, major) {
-        return { rc: rc, sub: sub, patch: patch, minor: minor, major: major };
+    return q.all([q.nfcall(bump, Object.assign({ type: 'prerelease', preid: RC_PREID }, opts)), q.nfcall(bump, Object.assign({ type: 'patch' }, opts)), q.nfcall(bump, Object.assign({ type: 'minor' }, opts)), q.nfcall(bump, Object.assign({ type: 'major' }, opts))]).spread(function (rc, patch, minor, major) {
+        return { rc: rc, patch: patch, minor: minor, major: major };
     });
 }
 
@@ -38,9 +32,6 @@ function prompt(versions) {
         name: "version",
         type: "list",
         choices: [{
-            name: 'sub-release (' + versions.sub.new + ')',
-            value: versions.sub
-        }, {
             name: 'release-candidate (' + versions.rc.new + ')',
             value: versions.rc
         }, {
