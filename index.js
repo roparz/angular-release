@@ -63,6 +63,18 @@ function prompt(versions) {
     })
 }
 
+function git_status(version) {
+    // Check status only for release candidates
+    if (version.preid !== RC_PREID) return version
+    let defer = q.defer()
+    exec('git status --porcelain', (err, res) => {
+        if (err) return defer.reject(err)
+        if (res.trim().length) return defer.reject(new Error('Clean your working tree before running angular-release'))
+        defer.resolve(version)
+    })
+    return defer.promise
+}
+
 function bump_version(version) {
     return q.nfcall(fs.writeFile, PACKAGE_PATH, version.str)
     .then(() => version)
@@ -139,6 +151,7 @@ function notify(msg, optional) {
 
 get_all_versions()
 .then(prompt)
+.then(git_status)
 .then(notify('- Update package.json with version: $$version'))
 .then(bump_version)
 .then(notify('- Update changelog', true))
