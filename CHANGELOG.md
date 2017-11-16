@@ -1,3 +1,13 @@
+<a name="1.1.5"></a>
+## [1.1.5](https://github.com/roparz/angular-release/compare/1.1.4...1.1.5) (2017-11-16)
+
+
+### Bug Fixes
+
+* Fetch tags before create new one ([75fc9dc](https://github.com/roparz/angular-release/commit/75fc9dc))
+
+
+
 <a name="1.1.4"></a>
 ## [1.1.4](https://github.com/roparz/angular-release/compare/1.1.3...1.1.4) (2017-09-27)
 
