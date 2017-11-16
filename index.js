@@ -107,6 +107,7 @@ function git_tag(version) {
     if (version.preid === RC_PREID) return version
     let defer = q.defer()
     exec([
+        'git fetch --tags',
         `git tag ${ version.new }`,
         'git push --tags'
     ].join(' && '), (err) => {
