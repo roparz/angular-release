@@ -23,7 +23,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node_modules/.bin/babel index.js -o index-es5.js"
+    "build": "node_modules/.bin/babel index.js -o index-es5.js",
+    "release": "npm run build && node ."
   },
   "repository": {
     "type": "git",
