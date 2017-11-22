@@ -70,7 +70,9 @@ function bump_version(version) {
 
 function changelog(version) {
     standardChangelog.createIfMissing(CHANGELOG_PATH)
-    if (version.preid === RC_PREID) return version
+    if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG) {
+        return version
+    }
     let defer = q.defer()
     let file = fs.readFileSync(CHANGELOG_PATH)
     standardChangelog()
@@ -142,7 +144,7 @@ get_all_versions()
 .then(prompt)
 .then(notify('- Update package.json with version: $$version'))
 .then(bump_version)
-.then(notify('- Update changelog', true))
+.then(notify('- Update changelog', !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG))
 .then(changelog)
 .then(notify('- git commit'))
 .then(git_commit)
