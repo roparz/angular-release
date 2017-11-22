@@ -122,7 +122,9 @@ function git_tag(version) {
 }
 
 function github_release(version) {
-    if (version.preid === RC_PREID) return version
+    if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE) {
+        return version
+    }
     if (!process.env.GITHUB_OAUTH_TOKEN) {
         console.log('Cannot run conventionalGithubReleaser. You must add a .env file with a GITHUB_OAUTH_TOKEN key')
         return version
@@ -154,6 +156,6 @@ get_all_versions()
 .then(git_push)
 .then(notify('- git tag', !process.env.ALLOW_RELEASE_CANDIDATE_TAG))
 .then(git_tag)
-.then(notify('- Github release', true))
+.then(notify('- Github release', !process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE))
 .then(github_release)
 .catch((err) => console.log(err))
