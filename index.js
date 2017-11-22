@@ -13,7 +13,7 @@ const standardChangelog = require('standard-changelog')
 
 const PACKAGE_PATH = `${ process.env.PWD }/package.json`
     , CHANGELOG_PATH = `${ process.env.PWD }/CHANGELOG.md`
-    , RC_PREID = 'rc'
+    , RC_PREID = process.env.RELEASE_CANDIDATE_PREID || 'rc'
 
 const VERSION = require(PACKAGE_PATH).version
 
