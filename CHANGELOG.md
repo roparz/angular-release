@@ -1,3 +1,15 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/roparz/angular-release/compare/1.1.7...1.2.0) (2017-11-22)
+
+
+### Features
+
+* Add ALLOW_RELEASE_CANDIDATE_CHANGELOG env option ([0aecb69](https://github.com/roparz/angular-release/commit/0aecb69))
+* Add ALLOW_RELEASE_CANDIDATE_GH_RELEASE env option ([5ff03b4](https://github.com/roparz/angular-release/commit/5ff03b4))
+* Add ALLOW_RELEASE_CANDIDATE_TAG env option ([d74c9db](https://github.com/roparz/angular-release/commit/d74c9db))
+
+
+
 <a name="1.1.7"></a>
 ## [1.1.7](https://github.com/roparz/angular-release/compare/1.1.6...1.1.7) (2017-11-22)
 

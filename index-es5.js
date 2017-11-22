@@ -1,6 +1,15 @@
 #! /usr/bin/env node
 'use strict';
 
+/**
+ * Available .env options:
+ * - GITHUB_OAUTH_TOKEN: Github token used to create Github release
+ * - RELEASE_CANDIDATE_PREID: release candidate pre-id string (default: rc)
+ * - ALLOW_RELEASE_CANDIDATE_TAG: Allow release candidate to create tag with the chosen version
+ * - ALLOW_RELEASE_CANDIDATE_CHANGELOG: Allow release candidate to update changelog
+ * - ALLOW_RELEASE_CANDIDATE_GH_RELEASE: Allow release candidate to create Github release
+*/
+
 require('dotenv').config({ path: process.env.PWD + '/.env' });
 
 var standardChangelog = require('standard-changelog'),
@@ -65,7 +74,9 @@ function bump_version(version) {
 
 function changelog(version) {
     standardChangelog.createIfMissing(CHANGELOG_PATH);
-    if (version.preid === RC_PREID) return version;
+    if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG) {
+        return version;
+    }
     var defer = q.defer();
     var file = fs.readFileSync(CHANGELOG_PATH);
     standardChangelog().pipe(concatStream({ encoding: 'buffer' }, function (data) {
@@ -95,7 +106,9 @@ function git_push(version) {
 }
 
 function git_tag(version) {
-    if (version.preid === RC_PREID) return version;
+    if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_TAG) {
+        return version;
+    }
     var defer = q.defer();
     exec(['git fetch --tags', 'git tag ' + version.new, 'git push --tags'].join(' && '), function (err) {
         if (err) return defer.reject(err);
@@ -105,7 +118,9 @@ function git_tag(version) {
 }
 
 function github_release(version) {
-    if (version.preid === RC_PREID) return version;
+    if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE) {
+        return version;
+    }
     if (!process.env.GITHUB_OAUTH_TOKEN) {
         console.log('Cannot run conventionalGithubReleaser. You must add a .env file with a GITHUB_OAUTH_TOKEN key');
         return version;
@@ -125,6 +140,6 @@ function notify(msg, optional) {
     };
 }
 
-get_all_versions().then(prompt).then(notify('- Update package.json with version: $$version')).then(bump_version).then(notify('- Update changelog', true)).then(changelog).then(notify('- git commit')).then(git_commit).then(notify('- git push')).then(git_push).then(notify('- git tag', true)).then(git_tag).then(notify('- Github release', true)).then(github_release).catch(function (err) {
+get_all_versions().then(prompt).then(notify('- Update package.json with version: $$version')).then(bump_version).then(notify('- Update changelog', !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG)).then(changelog).then(notify('- git commit')).then(git_commit).then(notify('- git push')).then(git_push).then(notify('- git tag', !process.env.ALLOW_RELEASE_CANDIDATE_TAG)).then(git_tag).then(notify('- Github release', !process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE)).then(github_release).catch(function (err) {
     return console.log(err);
 });
