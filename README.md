@@ -25,7 +25,6 @@ node_modules/.bin/angular-release-es5
 ## How it works
 
 - you choose the kind of release you want to do (see screenshot below)
-  - `sub-release`
   - `release-candidate`
   - `patch`
   - `minor`
@@ -42,6 +41,15 @@ node_modules/.bin/angular-release-es5
 To create a Github Release you must add the `GITHUB_OAUTH_TOKEN` environment variable. There is two way to do it :
 - create a `.env` file with `GITHUB_OAUTH_TOKEN` variable
 - set the environment variable before running the script: `GITHUB_OAUTH_TOKEN=xxx node_modules/.bin/angular-release`
+
+
+## All available env options:
+
+- `GITHUB_OAUTH_TOKEN`: Github token used to create Github release
+- `RELEASE_CANDIDATE_PREID`: release candidate pre-id string (default: rc)
+- `ALLOW_RELEASE_CANDIDATE_TAG`: Allow release candidate to create tag with the chosen version
+- `ALLOW_RELEASE_CANDIDATE_CHANGELOG`: Allow release candidate to update changelog
+- `ALLOW_RELEASE_CANDIDATE_GH_RELEASE`: Allow release candidate to create Github release
 
 ## Screenshot
 

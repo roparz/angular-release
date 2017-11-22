@@ -1,5 +1,14 @@
 #! /usr/bin/env node
 
+/**
+ * Available .env options:
+ * - GITHUB_OAUTH_TOKEN: Github token used to create Github release
+ * - RELEASE_CANDIDATE_PREID: release candidate pre-id string (default: rc)
+ * - ALLOW_RELEASE_CANDIDATE_TAG: Allow release candidate to create tag with the chosen version
+ * - ALLOW_RELEASE_CANDIDATE_CHANGELOG: Allow release candidate to update changelog
+ * - ALLOW_RELEASE_CANDIDATE_GH_RELEASE: Allow release candidate to create Github release
+*/
+
 require('dotenv').config({ path: `${ process.env.PWD }/.env` })
 
 const standardChangelog = require('standard-changelog')
