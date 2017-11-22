@@ -106,7 +106,9 @@ function git_push(version) {
 }
 
 function git_tag(version) {
-    if (version.preid === RC_PREID) return version
+    if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_TAG) {
+        return version
+    }
     let defer = q.defer()
     exec([
         'git fetch --tags',
@@ -150,7 +152,7 @@ get_all_versions()
 .then(git_commit)
 .then(notify('- git push'))
 .then(git_push)
-.then(notify('- git tag', true))
+.then(notify('- git tag', !process.env.ALLOW_RELEASE_CANDIDATE_TAG))
 .then(git_tag)
 .then(notify('- Github release', true))
 .then(github_release)
