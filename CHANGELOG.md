@@ -1,3 +1,13 @@
+<a name="1.1.7"></a>
+## [1.1.7](https://github.com/roparz/angular-release/compare/1.1.6...1.1.7) (2017-11-22)
+
+
+### Bug Fixes
+
+* Prevent error when running rc while CHANGELOG.md does not exists ([0e55519](https://github.com/roparz/angular-release/commit/0e55519))
+
+
+
 <a name="1.1.6"></a>
 ## [1.1.6](https://github.com/roparz/angular-release/compare/1.1.5...1.1.6) (2017-11-22)
 

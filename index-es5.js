@@ -64,9 +64,9 @@ function bump_version(version) {
 }
 
 function changelog(version) {
+    standardChangelog.createIfMissing(CHANGELOG_PATH);
     if (version.preid === RC_PREID) return version;
     var defer = q.defer();
-    standardChangelog.createIfMissing(CHANGELOG_PATH);
     var file = fs.readFileSync(CHANGELOG_PATH);
     standardChangelog().pipe(concatStream({ encoding: 'buffer' }, function (data) {
         fs.writeFileSync(CHANGELOG_PATH, Buffer.concat([data, file]));
