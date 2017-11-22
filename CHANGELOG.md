@@ -1,3 +1,13 @@
+<a name="1.1.6"></a>
+## [1.1.6](https://github.com/roparz/angular-release/compare/1.1.5...1.1.6) (2017-11-22)
+
+
+### Features
+
+* Add ability to set release candidate pre-id ([758f6b1](https://github.com/roparz/angular-release/commit/758f6b1))
+
+
+
 <a name="1.1.5"></a>
 ## [1.1.5](https://github.com/roparz/angular-release/compare/1.1.4...1.1.5) (2017-11-16)
 

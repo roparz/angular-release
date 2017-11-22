@@ -14,7 +14,7 @@ var standardChangelog = require('standard-changelog'),
 
 var PACKAGE_PATH = process.env.PWD + '/package.json',
     CHANGELOG_PATH = process.env.PWD + '/CHANGELOG.md',
-    RC_PREID = 'rc';
+    RC_PREID = process.env.RELEASE_CANDIDATE_PREID || 'rc';
 
 var VERSION = require(PACKAGE_PATH).version;
 
@@ -97,7 +97,7 @@ function git_push(version) {
 function git_tag(version) {
     if (version.preid === RC_PREID) return version;
     var defer = q.defer();
-    exec(['git tag ' + version.new, 'git push --tags'].join(' && '), function (err) {
+    exec(['git fetch --tags', 'git tag ' + version.new, 'git push --tags'].join(' && '), function (err) {
         if (err) return defer.reject(err);
         defer.resolve(version);
     });
