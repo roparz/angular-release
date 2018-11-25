@@ -9,7 +9,7 @@ A script to build releases based on [Angular conventional changelog preset](http
 ```
 npm i --save-dev angular-release
 # or
-yarr add -D angular-release
+yarn add -D angular-release
 ```
 
 ## Usage
