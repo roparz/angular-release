@@ -184,7 +184,8 @@ function githubRelease(version) {
 
   var GITHUB_AUTH = {
     type: 'oauth',
-    token: process.env.GITHUB_OAUTH_TOKEN
+    token: process.env.GITHUB_OAUTH_TOKEN,
+    url: 'https://api.github.com/'
   };
   return pcall(_conventionalGithubReleaser.default, GITHUB_AUTH, {
     preset: 'angular'

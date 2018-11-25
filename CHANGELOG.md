@@ -1,3 +1,7 @@
+# [2.0.0](https://github.com/roparz/angular-release/compare/1.2.0...2.0.0) (2018-11-25)
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/roparz/angular-release/compare/1.1.7...1.2.0) (2017-11-22)
 
