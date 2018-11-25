@@ -4,27 +4,30 @@
   "description": "A tool to builds releases based on Angular conventional changelog preset (inspired by Gulp \"Automate release workflow\" recipe).",
   "main": "index.js",
   "bin": {
-    "angular-release": "./index.js",
-    "angular-release-es5": "./index-es5.js"
+    "angular-release": "./dist/index.js"
   },
   "dependencies": {
-    "angular-precommit": "1.0.3",
-    "bump-regex": "2.7.0",
-    "concat-stream": "1.6.0",
-    "conventional-github-releaser": "1.1.12",
-    "dotenv": "4.0.0",
-    "inquirer": "3.2.3",
-    "q": "1.5.0",
-    "standard-changelog": "1.0.3"
+    "angular-precommit": "^1.0.3",
+    "bump-regex": "^4.0.0",
+    "concat-stream": "^1.6.2",
+    "conventional-github-releaser": "^3.1.2",
+    "dotenv": "^6.1.0",
+    "inquirer": "^6.2.0",
+    "standard-changelog": "^2.0.6"
   },
   "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-preset-env": "1.6.0"
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "standard": "^12.0.1"
+  },
+  "engines": {
+    "node": ">=8.11.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node_modules/.bin/babel index.js -o index-es5.js",
-    "release": "npm run build && node ."
+    "build": "babel index.js -o dist/index.js",
+    "release": "yarn build && node dist/index.js"
   },
   "repository": {
     "type": "git",

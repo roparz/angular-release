@@ -8,18 +8,14 @@ A script to build releases based on [Angular conventional changelog preset](http
 
 ```
 npm i --save-dev angular-release
+# or
+yarr add -D angular-release
 ```
 
 ## Usage
 
 ```
 node_modules/.bin/angular-release
-```
-
-*Compatibility mode for old node versions*
-
-```
-node_modules/.bin/angular-release-es5
 ```
 
 ## How it works
