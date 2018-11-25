@@ -2,7 +2,7 @@
 
 # Angular Release
 
-A script to build releases based on [Angular conventional changelog preset](https://github.com/conventional-changelog/conventional-changelog/blob/master/packages/conventional-changelog-angular/convention.md) (inspired by Gulp "Automate release workflow" recipe).
+A script to build releases based on [Standard conventional changelog](https://github.com/bcoe/conventional-changelog-standard/blob/master/convention.md).
 
 ## Install
 
