@@ -15,7 +15,7 @@ yarn add -D angular-release
 ## Usage
 
 ```
-node_modules/.bin/angular-release
+npx angular-release
 ```
 
 ## How it works
