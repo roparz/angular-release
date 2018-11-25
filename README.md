@@ -49,4 +49,4 @@ To create a Github Release you must add the `GITHUB_OAUTH_TOKEN` environment var
 
 ## Screenshot
 
-<img width="399" alt="screen shot 2017-09-24 at 10 53 32" src="https://user-images.githubusercontent.com/204520/30780963-d6494e6e-a116-11e7-9a5d-c037145033c8.png">
+<img width="399" alt="angular release" src="https://user-images.githubusercontent.com/204520/48980172-07cf0a00-f0c6-11e8-8ec6-43b63375690d.png">
