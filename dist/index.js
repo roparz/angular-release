@@ -83,7 +83,8 @@ function getAllVersions() {
     var minorRc = "".concat(minor["new"], "-").concat(rc);
     versions.minorRc = _objectSpread({}, minor, {
       str: minor.str.replace("\"version\": \"".concat(minor["new"], "\""), "\"version\": \"".concat(minorRc, "\"")),
-      "new": minorRc
+      "new": minorRc,
+      preid: RC_PREID
     });
     return pcall(bump, Object.assign({
       type: 'major'
@@ -93,7 +94,8 @@ function getAllVersions() {
     var majorRc = "".concat(major["new"], "-").concat(rc);
     versions.majorRc = _objectSpread({}, major, {
       str: major.str.replace("\"version\": \"".concat(major["new"], "\""), "\"version\": \"".concat(majorRc, "\"")),
-      "new": majorRc
+      "new": majorRc,
+      preid: RC_PREID
     });
     return versions;
   });

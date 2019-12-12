@@ -1,3 +1,12 @@
+## [2.1.2](https://github.com/roparz/angular-release/compare/2.1.1...2.1.2) (2019-12-12)
+
+
+### Bug Fixes
+
+* Add preid key to minorRc and majorRc version objects ([d8b5097](https://github.com/roparz/angular-release/commit/d8b50970abce3fc89db74a114f851458f0edd546))
+
+
+
 ## [2.1.1](https://github.com/roparz/angular-release/compare/2.1.0...2.1.1) (2019-12-12)
 
 
