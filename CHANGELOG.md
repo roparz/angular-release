@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/roparz/angular-release/compare/2.0.0...2.1.0) (2019-12-12)
+
+
+### Features
+
+* Add release-candidate option to all versions ([1941d16](https://github.com/roparz/angular-release/commit/1941d1689bf73c00f650ee18cef33a07b8d395dd))
+
+
+
 # [2.0.0](https://github.com/roparz/angular-release/compare/1.2.0...2.0.0) (2018-11-25)
 
 

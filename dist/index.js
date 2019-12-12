@@ -10,29 +10,25 @@
 */
 "use strict";
 
-var _standardChangelog = _interopRequireDefault(require("standard-changelog"));
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-var _conventionalGithubReleaser = _interopRequireDefault(require("conventional-github-releaser"));
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var _bumpRegex = _interopRequireDefault(require("bump-regex"));
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var _inquirer = _interopRequireDefault(require("inquirer"));
+var standardChangelog = require('standard-changelog');
 
-var _fs = _interopRequireDefault(require("fs"));
+var conventionalGithubReleaser = require('conventional-github-releaser');
 
-var _child_process = _interopRequireDefault(require("child_process"));
+var bump = require('bump-regex');
 
-var _concatStream = _interopRequireDefault(require("concat-stream"));
+var inquirer = require('inquirer');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var fs = require('fs');
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+var childProcess = require('child_process');
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+var concatStream = require('concat-stream');
 
 require('dotenv').config({
   path: "".concat(process.env.PWD, "/.env")
@@ -57,70 +53,95 @@ function pcall(fn) {
 
 function getAllVersions() {
   var opts = {
-    str: _fs.default.readFileSync(PACKAGE_PATH).toString()
+    str: fs.readFileSync(PACKAGE_PATH).toString()
   };
-  return Promise.all([pcall(_bumpRegex.default, Object.assign({
+  var versions = {
+    patchRc: null,
+    patch: null,
+    minorRc: null,
+    minor: null,
+    majorRc: null,
+    major: null
+  };
+  var rc = null;
+  return pcall(bump, Object.assign({
     type: 'prerelease',
     preid: RC_PREID
-  }, opts)), pcall(_bumpRegex.default, Object.assign({
-    type: 'patch'
-  }, opts)), pcall(_bumpRegex.default, Object.assign({
-    type: 'minor'
-  }, opts)), pcall(_bumpRegex.default, Object.assign({
-    type: 'major'
-  }, opts))]).then(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 4),
-        rc = _ref2[0],
-        patch = _ref2[1],
-        minor = _ref2[2],
-        major = _ref2[3];
-
-    return {
-      rc: rc,
-      patch: patch,
-      minor: minor,
-      major: major
-    };
+  }, opts)).then(function (patchRc) {
+    versions.patchRc = patchRc;
+    rc = patchRc["new"].split('-')[1];
+    return pcall(bump, Object.assign({
+      type: 'patch'
+    }, opts));
+  }).then(function (patch) {
+    versions.patch = patch;
+    return pcall(bump, Object.assign({
+      type: 'minor'
+    }, opts));
+  }).then(function (minor) {
+    versions.minor = minor;
+    var minorRc = "".concat(minor["new"], "-").concat(rc);
+    versions.minorRc = _objectSpread({}, minor, {
+      str: minor.str.replace("\"version\": \"".concat(minor["new"], "\""), "\"version\": \"".concat(minorRc, "\"")),
+      "new": minorRc
+    });
+    return pcall(bump, Object.assign({
+      type: 'major'
+    }, opts));
+  }).then(function (major) {
+    versions.major = major;
+    var majorRc = "".concat(major["new"], "-").concat(rc);
+    versions.majorRc = _objectSpread({}, major, {
+      str: major.str.replace("\"version\": \"".concat(major["new"], "\""), "\"version\": \"".concat(majorRc, "\"")),
+      "new": majorRc
+    });
+    return versions;
   });
 }
 
 function prompt(versions) {
-  return _inquirer.default.prompt([{
+  return inquirer.prompt([{
     name: 'version',
     type: 'list',
     choices: [{
-      name: "release-candidate (".concat(versions.rc.new, ")"),
-      value: versions.rc
+      name: "rc-patch (".concat(versions.patchRc["new"], ")"),
+      value: versions.patchRc
     }, {
-      name: "patch (".concat(versions.patch.new, ")"),
+      name: "patch (".concat(versions.patch["new"], ")"),
       value: versions.patch
     }, {
-      name: "minor (".concat(versions.minor.new, ")"),
+      name: "rc-minor (".concat(versions.minorRc["new"], ")"),
+      value: versions.minorRc
+    }, {
+      name: "minor (".concat(versions.minor["new"], ")"),
       value: versions.minor
     }, {
-      name: "major (".concat(versions.major.new, ")"),
+      name: "rc-major (".concat(versions.majorRc["new"], ")"),
+      value: versions.majorRc
+    }, {
+      name: "major (".concat(versions.major["new"], ")"),
       value: versions.major
     }, {
       name: "cancel",
       value: null
     }],
-    default: versions.patch,
+    "default": versions.patch,
     message: 'What kind of release is it?'
-  }]).then(function (_ref3) {
-    var version = _ref3.version;
+  }]).then(function (_ref) {
+    var version = _ref.version;
     if (!version) process.exit(0);
     return version;
   });
 }
 
 function bumpVersion(version) {
-  return pcall(_fs.default.writeFile, PACKAGE_PATH, version.str).then(function () {
+  return pcall(fs.writeFile, PACKAGE_PATH, version.str).then(function () {
     return version;
   });
 }
 
 function changelog(version) {
-  _standardChangelog.default.createIfMissing(CHANGELOG_PATH);
+  standardChangelog.createIfMissing(CHANGELOG_PATH);
 
   if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG) {
     return version;
@@ -128,14 +149,12 @@ function changelog(version) {
 
   return new Promise(function (resolve, reject) {
     try {
-      (0, _standardChangelog.default)().pipe((0, _concatStream.default)({
+      standardChangelog().pipe(concatStream({
         encoding: 'buffer'
       }, function (data) {
         try {
-          var file = _fs.default.readFileSync(CHANGELOG_PATH);
-
-          _fs.default.writeFileSync(CHANGELOG_PATH, Buffer.concat([data, file]));
-
+          var file = fs.readFileSync(CHANGELOG_PATH);
+          fs.writeFileSync(CHANGELOG_PATH, Buffer.concat([data, file]));
           resolve(version);
         } catch (error) {
           reject(error);
@@ -148,15 +167,15 @@ function changelog(version) {
 }
 
 function gitCommit(version) {
-  var cmd = ['git add package.json CHANGELOG.md', "git commit -a -m \"chore(release): v".concat(version.new, "\"")].join(' && ');
-  return pcall(_child_process.default.exec, cmd).then(function () {
+  var cmd = ['git add package.json CHANGELOG.md', "git commit -a -m \"chore(release): v".concat(version["new"], "\"")].join(' && ');
+  return pcall(childProcess.exec, cmd).then(function () {
     return version;
   });
 }
 
 function gitPush(version) {
   var cmd = 'git push';
-  return pcall(_child_process.default.exec, cmd).then(function () {
+  return pcall(childProcess.exec, cmd).then(function () {
     return version;
   });
 }
@@ -166,8 +185,8 @@ function gitTag(version) {
     return version;
   }
 
-  var cmd = ['git fetch --tags', "git tag ".concat(version.new), 'git push --tags'].join(' && ');
-  return pcall(_child_process.default.exec, cmd).then(function () {
+  var cmd = ['git fetch --tags', "git tag ".concat(version["new"]), 'git push --tags'].join(' && ');
+  return pcall(childProcess.exec, cmd).then(function () {
     return version;
   });
 }
@@ -187,7 +206,7 @@ function githubRelease(version) {
     token: process.env.GITHUB_OAUTH_TOKEN,
     url: 'https://api.github.com/'
   };
-  return pcall(_conventionalGithubReleaser.default, GITHUB_AUTH, {
+  return pcall(conventionalGithubReleaser, GITHUB_AUTH, {
     preset: 'angular'
   });
 }
@@ -195,11 +214,11 @@ function githubRelease(version) {
 function notify(msg, optional) {
   return function (version) {
     if (optional && version.preid === RC_PREID) return version;
-    console.log(msg.replace('$$version', version.new));
+    console.log(msg.replace('$$version', version["new"]));
     return version;
   };
 }
 
-getAllVersions().then(prompt).then(notify('- Update package.json with version: $$version')).then(bumpVersion).then(notify('- Update changelog', !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG)).then(changelog).then(notify('- git commit')).then(gitCommit).then(notify('- git push')).then(gitPush).then(notify('- git tag', !process.env.ALLOW_RELEASE_CANDIDATE_TAG)).then(gitTag).then(notify('- Github release', !process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE)).then(githubRelease).catch(function (err) {
+getAllVersions().then(prompt).then(notify('- Update package.json with version: $$version')).then(bumpVersion).then(notify('- Update changelog', !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG)).then(changelog).then(notify('- git commit')).then(gitCommit).then(notify('- git push')).then(gitPush).then(notify('- git tag', !process.env.ALLOW_RELEASE_CANDIDATE_TAG)).then(gitTag).then(notify('- Github release', !process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE)).then(githubRelease)["catch"](function (err) {
   return console.log(err);
 });
