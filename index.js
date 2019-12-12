@@ -79,6 +79,7 @@ function getAllVersions () {
 }
 
 function prompt (versions) {
+  console.log(`\nCurrent version is ${versions.patch.prev}.\n`)
   return inquirer.prompt([
     {
       name: 'version',
