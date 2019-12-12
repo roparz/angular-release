@@ -9,13 +9,13 @@
  * - ALLOW_RELEASE_CANDIDATE_GH_RELEASE: Allow release candidate to create Github release
 */
 
-import standardChangelog from 'standard-changelog'
-import conventionalGithubReleaser from 'conventional-github-releaser'
-import bump from 'bump-regex'
-import inquirer from 'inquirer'
-import fs from 'fs'
-import childProcess from 'child_process'
-import concatStream from 'concat-stream'
+const standardChangelog = require('standard-changelog')
+const conventionalGithubReleaser = require('conventional-github-releaser')
+const bump = require('bump-regex')
+const inquirer = require('inquirer')
+const fs = require('fs')
+const childProcess = require('child_process')
+const concatStream = require('concat-stream')
 
 require('dotenv').config({ path: `${process.env.PWD}/.env` })
 
@@ -37,14 +37,44 @@ function getAllVersions () {
   const opts = {
     str: fs.readFileSync(PACKAGE_PATH).toString()
   }
-  return Promise.all([
-    pcall(bump, Object.assign({ type: 'prerelease', preid: RC_PREID }, opts)),
-    pcall(bump, Object.assign({ type: 'patch' }, opts)),
-    pcall(bump, Object.assign({ type: 'minor' }, opts)),
-    pcall(bump, Object.assign({ type: 'major' }, opts))
-  ])
-    .then(([rc, patch, minor, major]) => {
-      return { rc, patch, minor, major }
+  const versions = {
+    patchRc: null,
+    patch: null,
+    minorRc: null,
+    minor: null,
+    majorRc: null,
+    major: null
+  }
+  let rc = null
+  return pcall(bump, Object.assign({ type: 'prerelease', preid: RC_PREID }, opts))
+    .then(patchRc => {
+      versions.patchRc = patchRc
+      rc = patchRc.new.split('-')[1]
+      return pcall(bump, Object.assign({ type: 'patch' }, opts))
+    })
+    .then(patch => {
+      versions.patch = patch
+      return pcall(bump, Object.assign({ type: 'minor' }, opts))
+    })
+    .then(minor => {
+      versions.minor = minor
+      const minorRc = `${minor.new}-${rc}`
+      versions.minorRc = {
+        ...minor,
+        str: minor.str.replace(`"version": "${minor.new}"`, `"version": "${minorRc}"`),
+        new: minorRc
+      }
+      return pcall(bump, Object.assign({ type: 'major' }, opts))
+    })
+    .then(major => {
+      versions.major = major
+      const majorRc = `${major.new}-${rc}`
+      versions.majorRc = {
+        ...major,
+        str: major.str.replace(`"version": "${major.new}"`, `"version": "${majorRc}"`),
+        new: majorRc
+      }
+      return versions
     })
 }
 
@@ -53,22 +83,36 @@ function prompt (versions) {
     {
       name: 'version',
       type: 'list',
-      choices: [{
-        name: `release-candidate (${versions.rc.new})`,
-        value: versions.rc
-      }, {
-        name: `patch (${versions.patch.new})`,
-        value: versions.patch
-      }, {
-        name: `minor (${versions.minor.new})`,
-        value: versions.minor
-      }, {
-        name: `major (${versions.major.new})`,
-        value: versions.major
-      }, {
-        name: `cancel`,
-        value: null
-      }],
+      choices: [
+        {
+          name: `rc-patch (${versions.patchRc.new})`,
+          value: versions.patchRc
+        },
+        {
+          name: `patch (${versions.patch.new})`,
+          value: versions.patch
+        },
+        {
+          name: `rc-minor (${versions.minorRc.new})`,
+          value: versions.minorRc
+        },
+        {
+          name: `minor (${versions.minor.new})`,
+          value: versions.minor
+        },
+        {
+          name: `rc-major (${versions.majorRc.new})`,
+          value: versions.majorRc
+        },
+        {
+          name: `major (${versions.major.new})`,
+          value: versions.major
+        },
+        {
+          name: `cancel`,
+          value: null
+        }
+      ],
       default: versions.patch,
       message: 'What kind of release is it?'
     }
