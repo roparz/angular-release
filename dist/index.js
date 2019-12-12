@@ -100,6 +100,7 @@ function getAllVersions() {
 }
 
 function prompt(versions) {
+  console.log("\nCurrent version is ".concat(versions.patch.prev, ".\n"));
   return inquirer.prompt([{
     name: 'version',
     type: 'list',

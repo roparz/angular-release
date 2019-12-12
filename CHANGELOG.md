@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/roparz/angular-release/compare/2.1.0...2.1.1) (2019-12-12)
+
+
+### Features
+
+* Display current version before prompt ([e6affff](https://github.com/roparz/angular-release/commit/e6affff73d362997a605f4422aa900817b567556))
+
+
+
 # [2.1.0](https://github.com/roparz/angular-release/compare/2.0.0...2.1.0) (2019-12-12)
 
 
