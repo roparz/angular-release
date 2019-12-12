@@ -62,7 +62,8 @@ function getAllVersions () {
       versions.minorRc = {
         ...minor,
         str: minor.str.replace(`"version": "${minor.new}"`, `"version": "${minorRc}"`),
-        new: minorRc
+        new: minorRc,
+        preid: RC_PREID
       }
       return pcall(bump, Object.assign({ type: 'major' }, opts))
     })
@@ -72,7 +73,8 @@ function getAllVersions () {
       versions.majorRc = {
         ...major,
         str: major.str.replace(`"version": "${major.new}"`, `"version": "${majorRc}"`),
-        new: majorRc
+        new: majorRc,
+        preid: RC_PREID
       }
       return versions
     })
