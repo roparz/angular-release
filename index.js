@@ -82,41 +82,59 @@ function getAllVersions () {
 
 function prompt (versions) {
   console.log(`\nCurrent version is ${versions.patch.prev}.\n`)
+
+  const { patchRc, patch, minorRc, minor, majorRc, major } = versions
+  const choices = []
+
+  if (patchRc.new !== minorRc.new) {
+    choices.push({
+      name: `rc-patch (${patchRc.new})`,
+      value: patchRc
+    })
+  }
+
+  if (patch.new !== minor.new) {
+    choices.push({
+      name: `patch (${patch.new})`,
+      value: patch
+    })
+  }
+
+  if (minorRc.new !== majorRc.new) {
+    choices.push({
+      name: `rc-minor (${minorRc.new})`,
+      value: minorRc
+    })
+  }
+
+  if (minor.new !== major.new) {
+    choices.push({
+      name: `minor (${minor.new})`,
+      value: minor
+    })
+  }
+
+  choices.push(
+    {
+      name: `rc-major (${majorRc.new})`,
+      value: majorRc
+    },
+    {
+      name: `major (${major.new})`,
+      value: major
+    },
+    {
+      name: `cancel`,
+      value: null
+    }
+  )
+
   return inquirer.prompt([
     {
       name: 'version',
       type: 'list',
-      choices: [
-        {
-          name: `rc-patch (${versions.patchRc.new})`,
-          value: versions.patchRc
-        },
-        {
-          name: `patch (${versions.patch.new})`,
-          value: versions.patch
-        },
-        {
-          name: `rc-minor (${versions.minorRc.new})`,
-          value: versions.minorRc
-        },
-        {
-          name: `minor (${versions.minor.new})`,
-          value: versions.minor
-        },
-        {
-          name: `rc-major (${versions.majorRc.new})`,
-          value: versions.majorRc
-        },
-        {
-          name: `major (${versions.major.new})`,
-          value: versions.major
-        },
-        {
-          name: `cancel`,
-          value: null
-        }
-      ],
-      default: versions.patch,
+      choices,
+      default: choices[0].value,
       message: 'What kind of release is it?'
     }
   ])
