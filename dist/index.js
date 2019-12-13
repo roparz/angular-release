@@ -103,32 +103,57 @@ function getAllVersions() {
 
 function prompt(versions) {
   console.log("\nCurrent version is ".concat(versions.patch.prev, ".\n"));
+  var patchRc = versions.patchRc,
+      patch = versions.patch,
+      minorRc = versions.minorRc,
+      minor = versions.minor,
+      majorRc = versions.majorRc,
+      major = versions.major;
+  var choices = [];
+
+  if (patchRc["new"] !== minorRc["new"]) {
+    choices.push({
+      name: "rc-patch (".concat(patchRc["new"], ")"),
+      value: patchRc
+    });
+  }
+
+  if (patch["new"] !== minor["new"]) {
+    choices.push({
+      name: "patch (".concat(patch["new"], ")"),
+      value: patch
+    });
+  }
+
+  if (minorRc["new"] !== majorRc["new"]) {
+    choices.push({
+      name: "rc-minor (".concat(minorRc["new"], ")"),
+      value: minorRc
+    });
+  }
+
+  if (minor["new"] !== major["new"]) {
+    choices.push({
+      name: "minor (".concat(minor["new"], ")"),
+      value: minor
+    });
+  }
+
+  choices.push({
+    name: "rc-major (".concat(majorRc["new"], ")"),
+    value: majorRc
+  }, {
+    name: "major (".concat(major["new"], ")"),
+    value: major
+  }, {
+    name: "cancel",
+    value: null
+  });
   return inquirer.prompt([{
     name: 'version',
     type: 'list',
-    choices: [{
-      name: "rc-patch (".concat(versions.patchRc["new"], ")"),
-      value: versions.patchRc
-    }, {
-      name: "patch (".concat(versions.patch["new"], ")"),
-      value: versions.patch
-    }, {
-      name: "rc-minor (".concat(versions.minorRc["new"], ")"),
-      value: versions.minorRc
-    }, {
-      name: "minor (".concat(versions.minor["new"], ")"),
-      value: versions.minor
-    }, {
-      name: "rc-major (".concat(versions.majorRc["new"], ")"),
-      value: versions.majorRc
-    }, {
-      name: "major (".concat(versions.major["new"], ")"),
-      value: versions.major
-    }, {
-      name: "cancel",
-      value: null
-    }],
-    "default": versions.patch,
+    choices: choices,
+    "default": choices[0].value,
     message: 'What kind of release is it?'
   }]).then(function (_ref) {
     var version = _ref.version;

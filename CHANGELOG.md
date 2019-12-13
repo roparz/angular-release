@@ -1,3 +1,12 @@
+## [2.1.3](https://github.com/roparz/angular-release/compare/2.1.2...2.1.3) (2019-12-13)
+
+
+### Bug Fixes
+
+* Do not display duplicated versions when updating from RC ([8c55935](https://github.com/roparz/angular-release/commit/8c559354c96c237253f6b3bf44e57cb57f6851d9))
+
+
+
 ## [2.1.2](https://github.com/roparz/angular-release/compare/2.1.1...2.1.2) (2019-12-12)
 
 
