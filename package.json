@@ -24,6 +24,12 @@
   "engines": {
     "node": ">=8.11.3"
   },
+  "resolutions": {
+    "yargs-parser": ">=13.1.2",
+    "trim-newlines": ">=3.0.1",
+    "debug": ">=3.2.7",
+    "http-cache-semantics": ">=4.1.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel index.js -o dist/index.js",
