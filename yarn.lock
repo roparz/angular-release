@@ -964,10 +964,10 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
 
-bump-regex@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/bump-regex/-/bump-regex-4.0.0.tgz#03c677d8b8c7a63a509a1cdf684207842ab0a6fb"
-  integrity sha512-N4z80e3i1c6w29SF9YBqVreQdrxvXa+IJL+mX/ua6v5cMCRHJiImYrpdkDb5cpfPiL2LYw0LjE0lBoDm3sqSrw==
+bump-regex@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/bump-regex/-/bump-regex-4.1.0.tgz#b9f3619e54d28c9e4cf5e30265503bb20bff3c1d"
+  integrity sha512-75Kr/Iw6lqnOKF/7YpE0WyOMBaaSpdrXTquIxR0qbTgZxwJos6563zNSn+w/LPJUoL4DXq20QX9AQy4+UJbyhw==
   dependencies:
     semver "^5.1.0"
 
