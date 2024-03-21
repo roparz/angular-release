@@ -1,3 +1,17 @@
+# [2.2.0](https://github.com/roparz/angular-release/compare/2.1.3...2.2.0) (2024-03-21)
+
+
+### Bug Fixes
+
+* **options:** Fix options when set to false in .env file ([3083160](https://github.com/roparz/angular-release/commit/30831606fa1f079af7f82f54da2532b9914c408e))
+
+
+### Features
+
+* Add ENABLE_RELEASE_CANDIDATE option ([7b28cb2](https://github.com/roparz/angular-release/commit/7b28cb287e05cc005518f44b188918b237d36bb0))
+
+
+
 ## [2.1.3](https://github.com/roparz/angular-release/compare/2.1.2...2.1.3) (2019-12-13)
 
 

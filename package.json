@@ -1,6 +1,6 @@
 {
   "name": "angular-release",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "A tool to builds releases based on Angular conventional changelog preset (inspired by Gulp \"Automate release workflow\" recipe).",
   "main": "index.js",
   "bin": {
