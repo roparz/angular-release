@@ -42,6 +42,7 @@ To create a Github Release you must add the `GITHUB_OAUTH_TOKEN` environment var
 ## All available env options:
 
 - `GITHUB_OAUTH_TOKEN`: Github token used to create Github release
+- `ENABLE_RELEASE_CANDIDATE`: Enable release candidate feature
 - `RELEASE_CANDIDATE_PREID`: release candidate pre-id string (default: rc)
 - `ALLOW_RELEASE_CANDIDATE_TAG`: Allow release candidate to create tag with the chosen version
 - `ALLOW_RELEASE_CANDIDATE_CHANGELOG`: Allow release candidate to update changelog
