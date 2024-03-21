@@ -832,7 +832,7 @@ ajv@^6.0.1, ajv@^6.5.0:
 angular-precommit@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/angular-precommit/-/angular-precommit-1.0.3.tgz#8c489322ec294483aefa4bf89a71adf55f35ba46"
-  integrity sha1-jEiTIuwpRIOu+kv4mnGt9V81ukY=
+  integrity sha512-QPmc+XWaed4wlJQ3uB4KhUScbgUGE8kFKiMI6jYdVKRi+rzJdUf3qD4KqHYlOHjjiT8aE8U/pe04EWwA+DqgBA==
 
 ansi-escapes@^3.0.0, ansi-escapes@^3.2.0:
   version "3.2.0"
