@@ -23,7 +23,11 @@ require('dotenv').config({ path: `${process.env.PWD}/.env` })
 const PACKAGE_PATH = `${process.env.PWD}/package.json`
 const CHANGELOG_PATH = `${process.env.PWD}/CHANGELOG.md`
 
+const GH_OAUTH_TOKEN = process.env.GITHUB_OAUTH_TOKEN
 const RC_ENABLED = process.env.ENABLE_RELEASE_CANDIDATE === 'true'
+const ALLOW_RC_TAG = process.env.ALLOW_RELEASE_CANDIDATE_TAG === 'true'
+const ALLOW_RC_CHANGELOG = process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG === 'true'
+const ALLOW_RC_GH_RELEASE = process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE === 'true'
 const RC_PREID = process.env.RELEASE_CANDIDATE_PREID || 'rc'
 
 function pcall (fn, ...opts) {
@@ -161,7 +165,7 @@ function bumpVersion (version) {
 
 function changelog (version) {
   standardChangelog.createIfMissing(CHANGELOG_PATH)
-  if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG) {
+  if (version.preid === RC_PREID && !ALLOW_RC_CHANGELOG) {
     return version
   }
   return new Promise((resolve, reject) => {
@@ -198,7 +202,7 @@ function gitPush (version) {
 }
 
 function gitTag (version) {
-  if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_TAG) {
+  if (version.preid === RC_PREID && !ALLOW_RC_TAG) {
     return version
   }
   const cmd = [
@@ -211,16 +215,16 @@ function gitTag (version) {
 }
 
 function githubRelease (version) {
-  if (version.preid === RC_PREID && !process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE) {
+  if (version.preid === RC_PREID && !ALLOW_RC_GH_RELEASE) {
     return version
   }
-  if (!process.env.GITHUB_OAUTH_TOKEN) {
+  if (!GH_OAUTH_TOKEN) {
     console.log('Cannot run conventionalGithubReleaser. You must add a .env file with a GITHUB_OAUTH_TOKEN key')
     return version
   }
   const GITHUB_AUTH = {
     type: 'oauth',
-    token: process.env.GITHUB_OAUTH_TOKEN,
+    token: GH_OAUTH_TOKEN,
     url: 'https://api.github.com/'
   }
   return pcall(conventionalGithubReleaser, GITHUB_AUTH, { preset: 'angular' })
@@ -238,14 +242,14 @@ getAllVersions()
   .then(prompt)
   .then(notify('- Update package.json with version: $$version'))
   .then(bumpVersion)
-  .then(notify('- Update changelog', !process.env.ALLOW_RELEASE_CANDIDATE_CHANGELOG))
+  .then(notify('- Update changelog', !ALLOW_RC_CHANGELOG))
   .then(changelog)
   .then(notify('- git commit'))
   .then(gitCommit)
   .then(notify('- git push'))
   .then(gitPush)
-  .then(notify('- git tag', !process.env.ALLOW_RELEASE_CANDIDATE_TAG))
+  .then(notify('- git tag', !ALLOW_RC_TAG))
   .then(gitTag)
-  .then(notify('- Github release', !process.env.ALLOW_RELEASE_CANDIDATE_GH_RELEASE))
+  .then(notify('- Github release', !ALLOW_RC_GH_RELEASE))
   .then(githubRelease)
   .catch((err) => console.log(err))
