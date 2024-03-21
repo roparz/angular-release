@@ -3,6 +3,7 @@
 /**
  * Available .env options:
  * - GITHUB_OAUTH_TOKEN: Github token used to create Github release
+ * - ENABLE_RELEASE_CANDIDATE: Enable release candidate feature
  * - RELEASE_CANDIDATE_PREID: release candidate pre-id string (default: rc)
  * - ALLOW_RELEASE_CANDIDATE_TAG: Allow release candidate to create tag with the chosen version
  * - ALLOW_RELEASE_CANDIDATE_CHANGELOG: Allow release candidate to update changelog
@@ -21,6 +22,8 @@ require('dotenv').config({ path: `${process.env.PWD}/.env` })
 
 const PACKAGE_PATH = `${process.env.PWD}/package.json`
 const CHANGELOG_PATH = `${process.env.PWD}/CHANGELOG.md`
+
+const RC_ENABLED = process.env.ENABLE_RELEASE_CANDIDATE === 'true'
 const RC_PREID = process.env.RELEASE_CANDIDATE_PREID || 'rc'
 
 function pcall (fn, ...opts) {
@@ -48,7 +51,7 @@ function getAllVersions () {
   let rc = null
   return pcall(bump, Object.assign({ type: 'prerelease', preid: RC_PREID }, opts))
     .then(patchRc => {
-      versions.patchRc = patchRc
+      if (RC_ENABLED) versions.patchRc = patchRc
       rc = patchRc.new.split('-')[1]
       return pcall(bump, Object.assign({ type: 'patch' }, opts))
     })
@@ -58,23 +61,27 @@ function getAllVersions () {
     })
     .then(minor => {
       versions.minor = minor
-      const minorRc = `${minor.new}-${rc}`
-      versions.minorRc = {
-        ...minor,
-        str: minor.str.replace(`"version": "${minor.new}"`, `"version": "${minorRc}"`),
-        new: minorRc,
-        preid: RC_PREID
+      if (RC_ENABLED) {
+        const minorRc = `${minor.new}-${rc}`
+        versions.minorRc = {
+          ...minor,
+          str: minor.str.replace(`"version": "${minor.new}"`, `"version": "${minorRc}"`),
+          new: minorRc,
+          preid: RC_PREID
+        }
       }
       return pcall(bump, Object.assign({ type: 'major' }, opts))
     })
     .then(major => {
       versions.major = major
-      const majorRc = `${major.new}-${rc}`
-      versions.majorRc = {
-        ...major,
-        str: major.str.replace(`"version": "${major.new}"`, `"version": "${majorRc}"`),
-        new: majorRc,
-        preid: RC_PREID
+      if (RC_ENABLED) {
+        const majorRc = `${major.new}-${rc}`
+        versions.majorRc = {
+          ...major,
+          str: major.str.replace(`"version": "${major.new}"`, `"version": "${majorRc}"`),
+          new: majorRc,
+          preid: RC_PREID
+        }
       }
       return versions
     })
@@ -86,7 +93,7 @@ function prompt (versions) {
   const { patchRc, patch, minorRc, minor, majorRc, major } = versions
   const choices = []
 
-  if (patchRc.new !== minorRc.new) {
+  if (patchRc && patchRc.new !== minorRc.new) {
     choices.push({
       name: `rc-patch (${patchRc.new})`,
       value: patchRc
@@ -100,7 +107,7 @@ function prompt (versions) {
     })
   }
 
-  if (minorRc.new !== majorRc.new) {
+  if (minorRc && minorRc.new !== majorRc.new) {
     choices.push({
       name: `rc-minor (${minorRc.new})`,
       value: minorRc
@@ -114,11 +121,14 @@ function prompt (versions) {
     })
   }
 
-  choices.push(
-    {
+  if (majorRc) {
+    choices.push({
       name: `rc-major (${majorRc.new})`,
       value: majorRc
-    },
+    })
+  }
+
+  choices.push(
     {
       name: `major (${major.new})`,
       value: major
