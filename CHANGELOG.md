@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/roparz/angular-release/compare/2.2.0...2.2.1) (2025-11-24)
+
+
+### Bug Fixes
+
+* **gitTag:** Add -m option ([c7672ef](https://github.com/roparz/angular-release/commit/c7672ef7fce40cf84994dba895ff3ccdb2ee28fd))
+
+
+
 # [2.2.0](https://github.com/roparz/angular-release/compare/2.1.3...2.2.0) (2024-03-21)
 
 

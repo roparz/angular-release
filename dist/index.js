@@ -201,7 +201,7 @@ function gitTag(version) {
   if (version.preid === RC_PREID && !ALLOW_RC_TAG) {
     return version;
   }
-  var cmd = ['git fetch --tags', "git tag ".concat(version["new"]), 'git push --tags'].join(' && ');
+  var cmd = ['git fetch --tags', "git tag ".concat(version["new"], " -m \"v").concat(version["new"], "\""), 'git push --tags'].join(' && ');
   return pcall(childProcess.exec, cmd).then(function () {
     return version;
   });
