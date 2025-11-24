@@ -207,7 +207,7 @@ function gitTag (version) {
   }
   const cmd = [
     'git fetch --tags',
-    `git tag ${version.new}`,
+    `git tag ${version.new} -m "v${version.new}"`,
     'git push --tags'
   ].join(' && ')
   return pcall(childProcess.exec, cmd)
