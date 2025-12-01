@@ -12,7 +12,7 @@
     "conventional-github-releaser": "^3.1.2",
     "dotenv": "^16.4.5",
     "inquirer": "^6.2.0",
-    "standard-changelog": "^2.0.6"
+    "standard-changelog": "^7.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.26.4",
